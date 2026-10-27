@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบขอเบิกรถทดลองขับ - M2 MOTORSPORT EVolution</title>
+    <title>ระบบขอเบิก-คืนรถทดลองขับ - M2 MOTORSPORT EVolution</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -49,18 +49,11 @@
                 linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
         }
-        .btn-active {
-            border-color: #00A3E0 !important;
-            background: linear-gradient(135deg, rgba(0, 114, 206, 0.2) 0%, rgba(0, 163, 224, 0.3) 100%) !important;
-            box-shadow: 0 0 20px rgba(0, 163, 224, 0.4);
-            transform: scale(1.02);
-        }
         .glass-card {
             background: rgba(20, 21, 26, 0.85);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -83,14 +76,11 @@
 
         <!-- HEADER SECTION -->
         <header class="text-center mb-6 sm:mb-8">
-            <!-- MG Dynamic Logo SVG representation -->
             <div class="inline-flex items-center justify-center mb-3 group cursor-pointer" onclick="resetForm()">
                 <div class="relative flex items-center justify-center">
                     <svg class="w-20 h-20 text-white drop-shadow-[0_0_15px_rgba(0,163,224,0.3)] transition-transform duration-300 group-hover:scale-105" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Outer Octagon Frame -->
                         <polygon points="60,10 140,10 190,60 190,140 140,190 60,190 10,140 10,60" stroke="currentColor" stroke-width="10" fill="none" />
                         <polygon points="66,18 134,18 182,66 182,134 134,182 66,182 18,134 18,66" stroke="currentColor" stroke-width="4" fill="none" />
-                        <!-- MG Monogram Stylized -->
                         <path d="M 38,150 L 38,50 L 60,50 L 78,110 L 96,50 L 102,50 L 102,150 L 86,150 L 86,85 L 72,135 L 64,135 L 50,85 L 50,150 Z" fill="currentColor"/>
                         <path d="M 162,70 L 125,70 L 125,130 L 148,130 L 148,100 L 138,100 L 138,86 L 162,86 L 162,144 C 162,144 140,152 120,148 C 105,145 110,120 110,100 C 110,75 125,54 150,54 C 160,54 162,60 162,70 Z" fill="currentColor"/>
                     </svg>
@@ -104,7 +94,7 @@
                 <span class="text-brand-cyan font-bold tracking-widest text-lg sm:text-xl">EV</span>
                 <span class="text-gray-300 font-light tracking-widest text-lg sm:text-xl">OLUTION</span>
             </div>
-            <p class="text-xs sm:text-sm text-gray-400 mt-2 font-light">ระบบบันทึกการขอเบิกรถทดลองขับ (Test Drive)</p>
+            <p class="text-xs sm:text-sm text-gray-400 mt-2 font-light">ระบบบันทึกการขอเบิกและคืนรถทดลองขับ (Test Drive)</p>
         </header>
 
         <!-- STEP PROGRESS INDICATOR -->
@@ -112,7 +102,7 @@
             <div class="flex items-center justify-between text-xs font-medium text-gray-400 px-2">
                 <div id="step-1-indicator" class="flex items-center gap-2 text-brand-cyan font-semibold">
                     <span class="w-6 h-6 rounded-full bg-brand-cyan/20 border border-brand-cyan flex items-center justify-center text-xs">1</span>
-                    <span>เลือกผู้เบิกรถ</span>
+                    <span>เลือกผู้ดำเนินการ</span>
                 </div>
                 <div class="h-[2px] flex-1 bg-gray-800 mx-3 rounded" id="line-1"></div>
                 <div id="step-2-indicator" class="flex items-center gap-2">
@@ -122,7 +112,7 @@
                 <div class="h-[2px] flex-1 bg-gray-800 mx-3 rounded" id="line-2"></div>
                 <div id="step-3-indicator" class="flex items-center gap-2">
                     <span class="w-6 h-6 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-xs">3</span>
-                    <span>ยืนยันข้อมูล</span>
+                    <span>ยืนยันรายการ</span>
                 </div>
             </div>
         </div>
@@ -135,17 +125,15 @@
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-semibold text-white flex items-center gap-2">
                         <i data-lucide="user-check" class="text-brand-cyan w-5 h-5"></i>
-                        กรุณาเลือกผู้เบิกรถ
+                        กรุณาเลือกชื่อผู้ทำรายการ
                     </h2>
                     <span class="text-xs text-gray-400">จิ้มเพื่อเลือก</span>
                 </div>
 
-                <!-- Borrower Grid Buttons -->
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4" id="borrower-grid">
-                    <!-- Dynamic Buttons Generated by JS -->
+                    <!-- Dynamic Buttons -->
                 </div>
 
-                <!-- Add Custom Borrower Input -->
                 <div class="mt-4 pt-4 border-t border-gray-800 flex gap-2">
                     <input type="text" id="custom-name" placeholder="+ เพิ่มชื่ออื่นๆ / พิมพ์ชื่อที่นี่..." 
                            class="bg-black/50 border border-gray-800 rounded-xl px-4 py-3 text-sm text-white w-full focus:outline-none focus:border-brand-cyan transition">
@@ -155,37 +143,49 @@
                 </div>
             </div>
 
-            <!-- STEP 2: SELECT CAR MODEL -->
+            <!-- STEP 2: SELECT CAR MODEL & ACTION TYPE (BORROW / RETURN) -->
             <div id="step-2" class="hidden transition-all duration-300">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-semibold text-white flex items-center gap-2">
                         <i data-lucide="car" class="text-brand-cyan w-5 h-5"></i>
-                        เลือกรุ่นรถที่ต้องการทดลองขับ
+                        เลือกรุ่นรถและประเภทรายการ
                     </h2>
                     <button onclick="goToStep(1)" class="text-xs text-brand-cyan hover:underline flex items-center gap-1">
-                        <i data-lucide="arrow-left" class="w-3 h-3"></i> เปลี่ยนผู้เบิก
+                        <i data-lucide="arrow-left" class="w-3 h-3"></i> เปลี่ยนชื่อผู้ทำรายการ
                     </button>
                 </div>
 
                 <!-- Selected User Badge -->
                 <div class="bg-brand-blue/10 border border-brand-blue/30 rounded-xl p-3 mb-4 flex items-center justify-between">
-                    <span class="text-xs text-gray-400">ผู้ขอเบิกรถ:</span>
+                    <span class="text-xs text-gray-400">ผู้ทำรายการ:</span>
                     <span id="selected-user-display" class="font-semibold text-brand-cyan text-sm"></span>
+                </div>
+
+                <!-- Action Type Selection (Borrow / Return) -->
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <button onclick="selectActionType('เบิก')" id="btn-action-borrow" 
+                            class="p-3 rounded-xl border border-brand-cyan bg-brand-cyan/20 text-white font-semibold text-sm transition flex items-center justify-center gap-2">
+                        <i data-lucide="key-round" class="w-4 h-4 text-brand-cyan"></i> เบิกใช้งานรถ
+                    </button>
+                    <button onclick="selectActionType('คืน')" id="btn-action-return" 
+                            class="p-3 rounded-xl border border-gray-800 bg-black/40 text-gray-400 font-semibold text-sm transition flex items-center justify-center gap-2 hover:border-emerald-500/50 hover:text-white">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4 text-emerald-400"></i> คืนรถทดลองขับ
+                    </button>
                 </div>
 
                 <!-- Car Models Grid Buttons -->
                 <div class="grid grid-cols-2 gap-3 mb-4" id="car-grid">
-                    <!-- Dynamic Car Buttons Generated by JS -->
+                    <!-- Dynamic Car Buttons -->
                 </div>
             </div>
 
             <!-- STEP 3: CONFIRM & SUBMIT -->
             <div id="step-3" class="hidden transition-all duration-300">
                 <div class="text-center py-2">
-                    <div class="w-16 h-16 bg-brand-cyan/10 border border-brand-cyan rounded-full flex items-center justify-center mx-auto mb-3 text-brand-cyan">
+                    <div id="confirm-icon-bg" class="w-16 h-16 bg-brand-cyan/10 border border-brand-cyan rounded-full flex items-center justify-center mx-auto mb-3 text-brand-cyan">
                         <i data-lucide="shield-check" class="w-8 h-8"></i>
                     </div>
-                    <h2 class="text-xl font-bold text-white mb-1">ยืนยันการเบิกรถ</h2>
+                    <h2 class="text-xl font-bold text-white mb-1" id="confirm-title">ยืนยันการทำรายการ</h2>
                     <p class="text-xs text-gray-400">กรุณาตรวจสอบข้อมูลก่อนส่งเข้าระบบ Google Sheet</p>
                 </div>
 
@@ -194,15 +194,19 @@
                     <div class="absolute -right-8 -top-8 w-24 h-24 bg-brand-cyan/5 rounded-full blur-xl pointer-events-none"></div>
                     
                     <div class="flex justify-between items-center text-sm border-b border-gray-800 pb-2">
-                        <span class="text-gray-400">ผู้เบิกรถ</span>
+                        <span class="text-gray-400">ผู้ทำรายการ</span>
                         <span id="confirm-name" class="font-semibold text-white"></span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm border-b border-gray-800 pb-2">
+                        <span class="text-gray-400">ประเภทรายการ</span>
+                        <span id="confirm-action" class="font-bold"></span>
                     </div>
                     <div class="flex justify-between items-center text-sm border-b border-gray-800 pb-2">
                         <span class="text-gray-400">รุ่นรถทดลองขับ</span>
                         <span id="confirm-car" class="font-bold text-brand-cyan text-base"></span>
                     </div>
                     <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-400">เวลาทำการเบิก</span>
+                        <span class="text-gray-400">เวลาทำรายการ</span>
                         <span id="confirm-time" class="text-gray-300 text-xs font-mono"></span>
                     </div>
                 </div>
@@ -224,7 +228,7 @@
                     <i data-lucide="check-circle-2" class="w-10 h-10"></i>
                 </div>
                 <h2 class="text-2xl font-bold text-white mb-2">ส่งข้อมูลสำเร็จ!</h2>
-                <p class="text-sm text-gray-400 mb-6">บันทึกรายการขอเบิกรถลง Google Sheet เรียบร้อยแล้ว</p>
+                <p class="text-sm text-gray-400 mb-6">บันทึกรายการลง Google Sheet เรียบร้อยแล้ว</p>
                 
                 <button onclick="resetForm()" class="bg-gray-800 hover:bg-gray-700 text-white px-8 py-3 rounded-xl text-sm font-medium transition inline-flex items-center gap-2">
                     <i data-lucide="rotate-ccw" class="w-4 h-4"></i> ทำรายการใหม่
@@ -243,8 +247,7 @@
     <!-- SCRIPT LOGIC -->
     <script>
         // --- CONFIGURATION ---
-        // วาง URL ของ Google Apps Script Web App ที่ได้จากการ Deploy ที่นี่ค่ะ
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxrHOpBmzxQfarxyBVlQ1TgKwzOCJcC4MkAbOUjm5S1_4qeTTBpImRHO2gsbWKKNBIN/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwqqtQSzdtewBXZ1-QBf8O4QHmr68iFF3mBzhitclaP8jfAEZD4mwscA1MbbKdz5kJ9/exec";
 
         const TEAM_MEMBERS = [
             "ชินอิจิ", "เซลล์ดรีมโว", "เซลล์เบิร์ทเดย์", "เซลล์ต้อม", "เซลล์ปูนิ่ม", 
@@ -259,17 +262,16 @@
 
         // --- APP STATE ---
         let selectedBorrower = "";
+        let selectedAction = "เบิก"; // ค่าเริ่มต้นเป็น เบิก
         let selectedCar = "";
         let requestTimestamp = "";
 
-        // Initialize UI
         document.addEventListener("DOMContentLoaded", () => {
             lucide.createIcons();
             renderBorrowers();
             renderCars();
         });
 
-        // Render Borrower Buttons
         function renderBorrowers() {
             const grid = document.getElementById('borrower-grid');
             grid.innerHTML = TEAM_MEMBERS.map(name => `
@@ -282,7 +284,6 @@
             lucide.createIcons();
         }
 
-        // Render Car Model Buttons
         function renderCars() {
             const grid = document.getElementById('car-grid');
             grid.innerHTML = CAR_MODELS.map(car => `
@@ -296,14 +297,13 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-white text-base sm:text-lg group-hover:text-brand-cyan transition">${car.name}</h3>
-                        <p class="text-[10px] text-gray-400">กดเพื่อเลือกคันนี้</p>
+                        <p class="text-[10px] text-gray-400">กดเพื่อเลือกรุ่นนี้</p>
                     </div>
                 </button>
             `).join('');
             lucide.createIcons();
         }
 
-        // Handle Borrower Selection
         function selectBorrower(name) {
             selectedBorrower = name;
             document.getElementById('selected-user-display').innerText = selectedBorrower;
@@ -317,29 +317,49 @@
                 selectBorrower(val);
                 customInput.value = '';
             } else {
-                alert('กรุณากรอกชื่อผู้เบิก');
+                alert('กรุณากรอกชื่อผู้ทำรายการ');
             }
         }
 
-        // Handle Car Selection
+        function selectActionType(type) {
+            selectedAction = type;
+            const btnBorrow = document.getElementById('btn-action-borrow');
+            const btnReturn = document.getElementById('btn-action-return');
+
+            if (type === 'เบิก') {
+                btnBorrow.className = "p-3 rounded-xl border border-brand-cyan bg-brand-cyan/20 text-white font-semibold text-sm transition flex items-center justify-center gap-2";
+                btnReturn.className = "p-3 rounded-xl border border-gray-800 bg-black/40 text-gray-400 font-semibold text-sm transition flex items-center justify-center gap-2 hover:border-emerald-500/50 hover:text-white";
+            } else {
+                btnReturn.className = "p-3 rounded-xl border border-emerald-500 bg-emerald-500/20 text-white font-semibold text-sm transition flex items-center justify-center gap-2";
+                btnBorrow.className = "p-3 rounded-xl border border-gray-800 bg-black/40 text-gray-400 font-semibold text-sm transition flex items-center justify-center gap-2 hover:border-brand-cyan/50 hover:text-white";
+            }
+        }
+
         function selectCar(carName) {
             selectedCar = carName;
             
-            // Format Timestamp (Thai format)
             const now = new Date();
             const dateStr = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
             const timeStr = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             requestTimestamp = `${dateStr} เวลา ${timeStr} น.`;
 
-            // Update Confirm View
             document.getElementById('confirm-name').innerText = selectedBorrower;
+            
+            const actionEl = document.getElementById('confirm-action');
+            if (selectedAction === 'เบิก') {
+                actionEl.innerText = "เบิกใช้งานรถ";
+                actionEl.className = "font-bold text-brand-cyan";
+            } else {
+                actionEl.innerText = "คืนรถทดลองขับ";
+                actionEl.className = "font-bold text-emerald-400";
+            }
+
             document.getElementById('confirm-car').innerText = selectedCar;
             document.getElementById('confirm-time').innerText = requestTimestamp;
 
             goToStep(3);
         }
 
-        // Step Switcher
         function goToStep(stepNum) {
             document.getElementById('step-1').classList.add('hidden');
             document.getElementById('step-2').classList.add('hidden');
@@ -347,7 +367,6 @@
             document.getElementById('step-success').classList.add('hidden');
 
             document.getElementById(`step-${stepNum}`).classList.remove('hidden');
-
             updateProgressIndicators(stepNum);
         }
 
@@ -371,15 +390,15 @@
             });
         }
 
-        // Reset Form
         function resetForm() {
             selectedBorrower = "";
+            selectedAction = "เบิก";
             selectedCar = "";
             requestTimestamp = "";
+            selectActionType('เบิก');
             goToStep(1);
         }
 
-        // Submit Data to Google Sheets via Apps Script Web App
         async function submitToGoogleSheet() {
             const submitBtn = document.getElementById('submit-btn');
             const originalBtnContent = submitBtn.innerHTML;
@@ -391,6 +410,7 @@
             const payload = {
                 timestamp: requestTimestamp,
                 borrower: selectedBorrower,
+                actionType: selectedAction === 'เบิก' ? 'เบิกใช้งาน' : 'คืนรถ',
                 carModel: selectedCar
             };
 
@@ -400,7 +420,7 @@
                     submitBtn.innerHTML = originalBtnContent;
                     document.getElementById('step-3').classList.add('hidden');
                     document.getElementById('step-success').classList.remove('hidden');
-                    alert('⚠️ ยังไม่ได้ระบุ SCRIPT_URL ในไฟล์ HTML (แสดงผลการจำลองการส่งข้อมูล)');
+                    alert('⚠️ ยังไม่ได้ระบุ SCRIPT_URL (แสดงจำลองผลลัพธ์)');
                 }, 800);
                 return;
             }
