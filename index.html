@@ -102,12 +102,12 @@
             <div class="flex items-center justify-between text-xs font-medium text-gray-400 px-2">
                 <div id="step-1-indicator" class="flex items-center gap-2 text-brand-cyan font-semibold">
                     <span class="w-6 h-6 rounded-full bg-brand-cyan/20 border border-brand-cyan flex items-center justify-center text-xs">1</span>
-                    <span>เลือกผู้ดำเนินการ</span>
+                    <span>เลือกผู้ทำรายการ</span>
                 </div>
                 <div class="h-[2px] flex-1 bg-gray-800 mx-3 rounded" id="line-1"></div>
                 <div id="step-2-indicator" class="flex items-center gap-2">
                     <span class="w-6 h-6 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-xs">2</span>
-                    <span>เลือกรุ่นรถ</span>
+                    <span>รายละเอียดรถ</span>
                 </div>
                 <div class="h-[2px] flex-1 bg-gray-800 mx-3 rounded" id="line-2"></div>
                 <div id="step-3-indicator" class="flex items-center gap-2">
@@ -143,12 +143,12 @@
                 </div>
             </div>
 
-            <!-- STEP 2: SELECT CAR MODEL & ACTION TYPE (BORROW / RETURN) -->
+            <!-- STEP 2: SELECT CAR MODEL, ACTION TYPE, DETAILS & TIME -->
             <div id="step-2" class="hidden transition-all duration-300">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-semibold text-white flex items-center gap-2">
                         <i data-lucide="car" class="text-brand-cyan w-5 h-5"></i>
-                        เลือกรุ่นรถและประเภทรายการ
+                        รายละเอียดการใช้รถ
                     </h2>
                     <button onclick="goToStep(1)" class="text-xs text-brand-cyan hover:underline flex items-center gap-1">
                         <i data-lucide="arrow-left" class="w-3 h-3"></i> เปลี่ยนชื่อผู้ทำรายการ
@@ -174,9 +174,35 @@
                 </div>
 
                 <!-- Car Models Grid Buttons -->
-                <div class="grid grid-cols-2 gap-3 mb-4" id="car-grid">
-                    <!-- Dynamic Car Buttons -->
+                <div class="mb-4">
+                    <label class="block text-xs text-gray-400 mb-2 font-medium">เลือกรุ่นรถ:</label>
+                    <div class="grid grid-cols-3 gap-2" id="car-grid">
+                        <!-- Dynamic Car Buttons -->
+                    </div>
                 </div>
+
+                <!-- NEW: Time Slot Selection -->
+                <div class="mb-4">
+                    <label class="block text-xs text-gray-400 mb-2 font-medium">ช่วงเวลาใช้งาน:</label>
+                    <select id="time-slot" class="w-full bg-black/50 border border-gray-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-cyan transition">
+                        <option value="ช่วงเช้า (08:30 - 12:00 น.)">ช่วงเช้า (08:30 - 12:00 น.)</option>
+                        <option value="ช่วงบ่าย (13:00 - 17:00 น.)">ช่วงบ่าย (13:00 - 17:00 น.)</option>
+                        <option value="เต็มวัน (08:30 - 17:00 น.)">เต็มวัน (08:30 - 17:00 น.)</option>
+                        <option value="ลูกค้านอกสถานที่ / ทดลองขับพิเศษ">ลูกค้านอกสถานที่ / ทดลองขับพิเศษ</option>
+                    </select>
+                </div>
+
+                <!-- NEW: Additional Details Input -->
+                <div class="mb-5">
+                    <label class="block text-xs text-gray-400 mb-2 font-medium">รายละเอียดเพิ่มเติม / หมายเหตุ / เลขไมล์:</label>
+                    <input type="text" id="car-details" placeholder="เช่น ลูกค้าคุณสมชาย ขับทดลองเส้นทางบายพาส..." 
+                           class="w-full bg-black/50 border border-gray-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-cyan transition">
+                </div>
+
+                <!-- Proceed Button -->
+                <button onclick="validateAndProceedToStep3()" class="w-full py-3.5 bg-gradient-to-r from-brand-blue to-brand-cyan hover:opacity-90 text-white font-semibold rounded-xl text-sm transition shadow-lg shadow-brand-cyan/20 flex items-center justify-center gap-2">
+                    ตรวจสอบข้อมูลก่อนส่ง <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
             </div>
 
             <!-- STEP 3: CONFIRM & SUBMIT -->
@@ -205,8 +231,16 @@
                         <span class="text-gray-400">รุ่นรถทดลองขับ</span>
                         <span id="confirm-car" class="font-bold text-brand-cyan text-base"></span>
                     </div>
+                    <div class="flex justify-between items-center text-sm border-b border-gray-800 pb-2">
+                        <span class="text-gray-400">ช่วงเวลาใช้งาน</span>
+                        <span id="confirm-timeslot" class="text-gray-200"></span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm border-b border-gray-800 pb-2">
+                        <span class="text-gray-400">รายละเอียด</span>
+                        <span id="confirm-details" class="text-gray-300 text-right"></span>
+                    </div>
                     <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-400">เวลาทำรายการ</span>
+                        <span class="text-gray-400">เวลาบันทึกระบบ</span>
                         <span id="confirm-time" class="text-gray-300 text-xs font-mono"></span>
                     </div>
                 </div>
@@ -246,8 +280,7 @@
 
     <!-- SCRIPT LOGIC -->
     <script>
-        // --- CONFIGURATION ---
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwqqtQSzdtewBXZ1-QBf8O4QHmr68iFF3mBzhitclaP8jfAEZD4mwscA1MbbKdz5kJ9/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
 
         const TEAM_MEMBERS = [
             "ชินอิจิ", "เซลล์ดรีมโว", "เซลล์เบิร์ทเดย์", "เซลล์ต้อม", "เซลล์ปูนิ่ม", 
@@ -255,14 +288,13 @@
         ];
 
         const CAR_MODELS = [
-            { id: "MG4", name: "MG4 EV", type: "100% Electric", icon: "zap" },
-            { id: "MGS5 EV", name: "MGS5 EV", type: "100% Electric", icon: "crown" },
-            { id: "MG URBAN", name: "MG URBAN", type: "100% Electric", icon: "users" }
+            { id: "MG4", name: "MG4 EV", type: "Electric" },
+            { id: "MGS5 EV", name: "MGS5 EV", type: "Electric" },
+            { id: "MG URBAN", name: "MG URBAN", type: "Electric" }
         ];
 
-        // --- APP STATE ---
         let selectedBorrower = "";
-        let selectedAction = "เบิก"; // ค่าเริ่มต้นเป็น เบิก
+        let selectedAction = "เบิก";
         let selectedCar = "";
         let requestTimestamp = "";
 
@@ -287,26 +319,21 @@
         function renderCars() {
             const grid = document.getElementById('car-grid');
             grid.innerHTML = CAR_MODELS.map(car => `
-                <button onclick="selectCar('${car.name}')" 
-                        class="car-btn glass-card hover:border-brand-cyan p-4 rounded-xl text-left transition relative overflow-hidden group border border-gray-800 flex flex-col justify-between h-28">
-                    <div class="flex justify-between items-start">
-                        <span class="text-xs font-semibold px-2 py-0.5 rounded bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20">
-                            ${car.type}
-                        </span>
-                        <i data-lucide="${car.icon}" class="w-5 h-5 text-gray-500 group-hover:text-brand-cyan transition"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-white text-base sm:text-lg group-hover:text-brand-cyan transition">${car.name}</h3>
-                        <p class="text-[10px] text-gray-400">กดเพื่อเลือกรุ่นนี้</p>
-                    </div>
+                <button onclick="setCarSelection('${car.name}', this)" 
+                        class="car-model-btn glass-card hover:border-brand-cyan p-3 rounded-xl text-center transition border border-gray-800">
+                    <div class="font-bold text-white text-sm">${car.name}</div>
+                    <div class="text-[10px] text-gray-400 mt-0.5">${car.type}</div>
                 </button>
             `).join('');
-            lucide.createIcons();
         }
 
         function selectBorrower(name) {
             selectedBorrower = name;
             document.getElementById('selected-user-display').innerText = selectedBorrower;
+            // ตั้งค่าเลือกรถคันแรกเป็นค่าเริ่มต้น
+            if(!selectedCar) {
+                selectedCar = CAR_MODELS[0].name;
+            }
             goToStep(2);
         }
 
@@ -335,13 +362,27 @@
             }
         }
 
-        function selectCar(carName) {
+        function setCarSelection(carName, btnElement) {
             selectedCar = carName;
-            
+            document.querySelectorAll('.car-model-btn').forEach(btn => {
+                btn.classList.remove('border-brand-cyan', 'bg-brand-cyan/10');
+            });
+            btnElement.classList.add('border-brand-cyan', 'bg-brand-cyan/10');
+        }
+
+        function validateAndProceedToStep3() {
+            if (!selectedCar) {
+                alert('กรุณาเลือกรุ่นรถ');
+                return;
+            }
+
             const now = new Date();
             const dateStr = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
             const timeStr = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             requestTimestamp = `${dateStr} เวลา ${timeStr} น.`;
+
+            const timeSlot = document.getElementById('time-slot').value;
+            const details = document.getElementById('car-details').value.trim() || '-';
 
             document.getElementById('confirm-name').innerText = selectedBorrower;
             
@@ -355,6 +396,8 @@
             }
 
             document.getElementById('confirm-car').innerText = selectedCar;
+            document.getElementById('confirm-timeslot').innerText = timeSlot;
+            document.getElementById('confirm-details').innerText = details;
             document.getElementById('confirm-time').innerText = requestTimestamp;
 
             goToStep(3);
@@ -395,6 +438,7 @@
             selectedAction = "เบิก";
             selectedCar = "";
             requestTimestamp = "";
+            document.getElementById('car-details').value = "";
             selectActionType('เบิก');
             goToStep(1);
         }
@@ -411,7 +455,9 @@
                 timestamp: requestTimestamp,
                 borrower: selectedBorrower,
                 actionType: selectedAction === 'เบิก' ? 'เบิกใช้งาน' : 'คืนรถ',
-                carModel: selectedCar
+                carModel: selectedCar,
+                timeSlot: document.getElementById('time-slot').value,
+                details: document.getElementById('car-details').value.trim() || '-'
             };
 
             if (!SCRIPT_URL || SCRIPT_URL.includes("YOUR_SCRIPT_ID")) {
