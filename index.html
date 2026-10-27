@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบขอเบิก-คืนรถทดลองขับ - M2 MOTORSPORT EVolution</title>
+    <title>ระบบขอเบิก-คืนรถทดลองขับ & แดชบอร์ด - M2 MOTORSPORT EVolution</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Font Awesome for Extra Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts - Kanit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,13 +70,13 @@
     <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-brand-cyan/10 blur-[120px] rounded-full pointer-events-none"></div>
 
     <!-- MAIN CONTAINER -->
-    <div class="max-w-2xl mx-auto w-full relative z-10 my-auto">
+    <div class="max-w-3xl mx-auto w-full relative z-10 my-auto">
 
         <!-- HEADER SECTION -->
-        <header class="text-center mb-6 sm:mb-8">
-            <div class="inline-flex items-center justify-center mb-3 group cursor-pointer" onclick="resetForm()">
+        <header class="text-center mb-6">
+            <div class="inline-flex items-center justify-center mb-2 group cursor-pointer" onclick="switchTab('form')">
                 <div class="relative flex items-center justify-center">
-                    <svg class="w-20 h-20 text-white drop-shadow-[0_0_15px_rgba(0,163,224,0.3)] transition-transform duration-300 group-hover:scale-105" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="w-16 h-16 text-white drop-shadow-[0_0_15px_rgba(0,163,224,0.3)] transition-transform duration-300 group-hover:scale-105" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <polygon points="60,10 140,10 190,60 190,140 140,190 60,190 10,140 10,60" stroke="currentColor" stroke-width="10" fill="none" />
                         <polygon points="66,18 134,18 182,66 182,134 134,182 66,182 18,134 18,66" stroke="currentColor" stroke-width="4" fill="none" />
                         <path d="M 38,150 L 38,50 L 60,50 L 78,110 L 96,50 L 102,50 L 102,150 L 86,150 L 86,85 L 72,135 L 64,135 L 50,85 L 50,150 Z" fill="currentColor"/>
@@ -91,184 +89,236 @@
                 M2 MOTORSPORT
             </h1>
             <div class="flex items-center justify-center gap-1.5 mt-0.5">
-                <span class="text-brand-cyan font-bold tracking-widest text-lg sm:text-xl">EV</span>
-                <span class="text-gray-300 font-light tracking-widest text-lg sm:text-xl">OLUTION</span>
+                <span class="text-brand-cyan font-bold tracking-widest text-base sm:text-lg">EV</span>
+                <span class="text-gray-300 font-light tracking-widest text-base sm:text-lg">OLUTION</span>
             </div>
-            <p class="text-xs sm:text-sm text-gray-400 mt-2 font-light">ระบบบันทึกการขอเบิกและคืนรถทดลองขับ (Test Drive)</p>
+
+            <!-- NAVIGATION TABS -->
+            <div class="flex justify-center gap-2 mt-4">
+                <button onclick="switchTab('form')" id="tab-btn-form" class="px-4 py-2 rounded-xl text-xs font-semibold bg-brand-cyan text-brand-dark transition flex items-center gap-1.5 shadow-lg shadow-brand-cyan/20">
+                    <i data-lucide="file-text" class="w-4 h-4"></i> ฟอร์มขอเบิก-คืนรถ
+                </button>
+                <button onclick="switchTab('dashboard')" id="tab-btn-dashboard" class="px-4 py-2 rounded-xl text-xs font-semibold bg-gray-800 text-gray-300 hover:text-white transition flex items-center gap-1.5 border border-gray-700">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4 text-brand-cyan"></i> แดชบอร์ดสรุปข้อมูล
+                </button>
+            </div>
         </header>
 
-        <!-- STEP PROGRESS INDICATOR -->
-        <div class="glass-card rounded-2xl p-4 mb-6 shadow-xl border border-brand-border/50">
-            <div class="flex items-center justify-between text-xs font-medium text-gray-400 px-2">
-                <div id="step-1-indicator" class="flex items-center gap-2 text-brand-cyan font-semibold">
-                    <span class="w-6 h-6 rounded-full bg-brand-cyan/20 border border-brand-cyan flex items-center justify-center text-xs">1</span>
-                    <span>เลือกผู้ทำรายการ</span>
+        <!-- ================= TAB 1: FORM SYSTEM ================= -->
+        <div id="tab-form" class="transition-all duration-300">
+            <div class="glass-card rounded-2xl p-4 mb-5 shadow-xl border border-brand-border/50">
+                <div class="flex items-center justify-between text-xs font-medium text-gray-400 px-2">
+                    <div id="step-1-indicator" class="flex items-center gap-2 text-brand-cyan font-semibold">
+                        <span class="w-6 h-6 rounded-full bg-brand-cyan/20 border border-brand-cyan flex items-center justify-center text-xs">1</span>
+                        <span>ผู้ทำรายการ</span>
+                    </div>
+                    <div class="h-[2px] flex-1 bg-gray-800 mx-3 rounded" id="line-1"></div>
+                    <div id="step-2-indicator" class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-xs">2</span>
+                        <span>รายละเอียด</span>
+                    </div>
+                    <div class="h-[2px] flex-1 bg-gray-800 mx-3 rounded" id="line-2"></div>
+                    <div id="step-3-indicator" class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-xs">3</span>
+                        <span>ยืนยัน</span>
+                    </div>
                 </div>
-                <div class="h-[2px] flex-1 bg-gray-800 mx-3 rounded" id="line-1"></div>
-                <div id="step-2-indicator" class="flex items-center gap-2">
-                    <span class="w-6 h-6 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-xs">2</span>
-                    <span>รายละเอียดรถ</span>
+            </div>
+
+            <div class="glass-card rounded-2xl p-5 sm:p-7 shadow-2xl relative overflow-hidden">
+                <!-- STEP 1 -->
+                <div id="step-1" class="transition-all duration-300">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+                            <i data-lucide="user-check" class="text-brand-cyan w-5 h-5"></i>
+                            กรุณาเลือกชื่อผู้ทำรายการ
+                        </h2>
+                        <span class="text-xs text-gray-400">จิ้มเพื่อเลือก</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4" id="borrower-grid"></div>
+
+                    <div class="mt-4 pt-4 border-t border-gray-800 flex gap-2">
+                        <input type="text" id="custom-name" placeholder="+ เพิ่มชื่ออื่นๆ / พิมพ์ชื่อที่นี่..." 
+                               class="bg-black/50 border border-gray-800 rounded-xl px-4 py-3 text-sm text-white w-full focus:outline-none focus:border-brand-cyan transition">
+                        <button onclick="selectCustomName()" class="bg-gray-800 hover:bg-gray-700 text-white px-5 py-3 rounded-xl text-sm font-medium transition shrink-0">
+                            ตกลง
+                        </button>
+                    </div>
                 </div>
-                <div class="h-[2px] flex-1 bg-gray-800 mx-3 rounded" id="line-2"></div>
-                <div id="step-3-indicator" class="flex items-center gap-2">
-                    <span class="w-6 h-6 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-xs">3</span>
-                    <span>ยืนยันรายการ</span>
+
+                <!-- STEP 2 -->
+                <div id="step-2" class="hidden transition-all duration-300">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+                            <i data-lucide="car" class="text-brand-cyan w-5 h-5"></i>
+                            รายละเอียดการใช้รถ
+                        </h2>
+                        <button onclick="goToStep(1)" class="text-xs text-brand-cyan hover:underline flex items-center gap-1">
+                            <i data-lucide="arrow-left" class="w-3 h-3"></i> เปลี่ยนชื่อผู้ทำรายการ
+                        </button>
+                    </div>
+
+                    <div class="bg-brand-blue/10 border border-brand-blue/30 rounded-xl p-3 mb-4 flex items-center justify-between">
+                        <span class="text-xs text-gray-400">ผู้ทำรายการ:</span>
+                        <span id="selected-user-display" class="font-semibold text-brand-cyan text-sm"></span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <button onclick="selectActionType('เบิก')" id="btn-action-borrow" 
+                                class="p-3 rounded-xl border border-brand-cyan bg-brand-cyan/20 text-white font-semibold text-sm transition flex items-center justify-center gap-2">
+                            <i data-lucide="key-round" class="w-4 h-4 text-brand-cyan"></i> เบิกใช้งานรถ
+                        </button>
+                        <button onclick="selectActionType('คืน')" id="btn-action-return" 
+                                class="p-3 rounded-xl border border-gray-800 bg-black/40 text-gray-400 font-semibold text-sm transition flex items-center justify-center gap-2 hover:border-emerald-500/50 hover:text-white">
+                            <i data-lucide="rotate-ccw" class="w-4 h-4 text-emerald-400"></i> คืนรถทดลองขับ
+                        </button>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-xs text-gray-400 mb-2 font-medium">เลือกรุ่นรถ:</label>
+                        <div class="grid grid-cols-3 gap-2" id="car-grid"></div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-xs text-gray-400 mb-2 font-medium">ช่วงเวลาใช้งาน:</label>
+                        <select id="time-slot" class="w-full bg-black/50 border border-gray-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-cyan transition">
+                            <option value="ช่วงเช้า (08:30 - 12:00 น.)">ช่วงเช้า (08:30 - 12:00 น.)</option>
+                            <option value="ช่วงบ่าย (13:00 - 17:00 น.)">ช่วงบ่าย (13:00 - 17:00 น.)</option>
+                            <option value="เต็มวัน (08:30 - 17:00 น.)">เต็มวัน (08:30 - 17:00 น.)</option>
+                            <option value="ลูกค้านอกสถานที่ / ทดลองขับพิเศษ">ลูกค้านอกสถานที่ / ทดลองขับพิเศษ</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-5">
+                        <label class="block text-xs text-gray-400 mb-2 font-medium">รายละเอียดเพิ่มเติม / หมายเหตุ / เลขไมล์:</label>
+                        <input type="text" id="car-details" placeholder="เช่น ลูกค้าคุณสมชาย ทดลองเส้นทางบายพาส..." 
+                               class="w-full bg-black/50 border border-gray-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-cyan transition">
+                    </div>
+
+                    <button onclick="validateAndProceedToStep3()" class="w-full py-3.5 bg-gradient-to-r from-brand-blue to-brand-cyan hover:opacity-90 text-white font-semibold rounded-xl text-sm transition shadow-lg shadow-brand-cyan/20 flex items-center justify-center gap-2">
+                        ตรวจสอบข้อมูลก่อนส่ง <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- STEP 3 -->
+                <div id="step-3" class="hidden transition-all duration-300">
+                    <div class="text-center py-2">
+                        <div class="w-16 h-16 bg-brand-cyan/10 border border-brand-cyan rounded-full flex items-center justify-center mx-auto mb-3 text-brand-cyan">
+                            <i data-lucide="shield-check" class="w-8 h-8"></i>
+                        </div>
+                        <h2 class="text-xl font-bold text-white mb-1">ยืนยันการทำรายการ</h2>
+                        <p class="text-xs text-gray-400">กรุณาตรวจสอบข้อมูลก่อนส่งเข้าระบบ Google Sheet</p>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 rounded-xl p-4 my-5 space-y-3 relative overflow-hidden">
+                        <div class="flex justify-between items-center text-sm border-b border-gray-800 pb-2">
+                            <span class="text-gray-400">ผู้ทำรายการ</span>
+                            <span id="confirm-name" class="font-semibold text-white"></span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm border-b border-gray-800 pb-2">
+                            <span class="text-gray-400">ประเภทรายการ</span>
+                            <span id="confirm-action" class="font-bold"></span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm border-b border-gray-800 pb-2">
+                            <span class="text-gray-400">รุ่นรถทดลองขับ</span>
+                            <span id="confirm-car" class="font-bold text-brand-cyan text-base"></span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm border-b border-gray-800 pb-2">
+                            <span class="text-gray-400">ช่วงเวลาใช้งาน</span>
+                            <span id="confirm-timeslot" class="text-gray-200"></span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm border-b border-gray-800 pb-2">
+                            <span class="text-gray-400">รายละเอียด</span>
+                            <span id="confirm-details" class="text-gray-300 text-right"></span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-400">เวลาบันทึกระบบ</span>
+                            <span id="confirm-time" class="text-gray-300 text-xs font-mono"></span>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button onclick="goToStep(2)" class="w-1/3 py-3.5 bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium rounded-xl text-sm transition">
+                            แก้ไข
+                        </button>
+                        <button id="submit-btn" onclick="submitToGoogleSheet()" class="w-2/3 py-3.5 bg-gradient-to-r from-brand-blue to-brand-cyan hover:opacity-90 text-white font-semibold rounded-xl text-sm transition shadow-lg shadow-brand-cyan/20 flex items-center justify-center gap-2">
+                            <i data-lucide="send" class="w-4 h-4"></i> ยืนยันส่งข้อมูล
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SUCCESS STATE -->
+                <div id="step-success" class="hidden text-center py-8">
+                    <div class="w-20 h-20 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-400">
+                        <i data-lucide="check-circle-2" class="w-10 h-10"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white mb-2">ส่งข้อมูลสำเร็จ!</h2>
+                    <p class="text-sm text-gray-400 mb-6">บันทึกรายการลง Google Sheet เรียบร้อยแล้ว</p>
+                    
+                    <button onclick="resetForm()" class="bg-gray-800 hover:bg-gray-700 text-white px-8 py-3 rounded-xl text-sm font-medium transition inline-flex items-center gap-2">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i> ทำรายการใหม่
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- MAIN CARD -->
-        <div class="glass-card rounded-2xl p-5 sm:p-7 shadow-2xl relative overflow-hidden">
-            
-            <!-- STEP 1: SELECT BORROWER -->
-            <div id="step-1" class="transition-all duration-300">
+        <!-- ================= TAB 2: DASHBOARD SUMMARY (LIVE SHEET DATA) ================= -->
+        <div id="tab-dashboard" class="hidden transition-all duration-300 space-y-4">
+            <!-- Summary Metric Cards -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div class="glass-card rounded-2xl p-4 border border-brand-border/50">
+                    <div class="text-xs text-gray-400 mb-1 flex items-center gap-1.5">
+                        <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-brand-cyan"></i> รายการทั้งหมด
+                    </div>
+                    <div class="text-2xl font-bold text-white" id="stat-total">0</div>
+                </div>
+                <div class="glass-card rounded-2xl p-4 border border-brand-border/50">
+                    <div class="text-xs text-gray-400 mb-1 flex items-center gap-1.5">
+                        <i data-lucide="key-round" class="w-3.5 h-3.5 text-brand-cyan"></i> กำลังใช้งาน
+                    </div>
+                    <div class="text-2xl font-bold text-brand-cyan" id="stat-active">0</div>
+                </div>
+                <div class="glass-card rounded-2xl p-4 border border-brand-border/50 col-span-2 sm:col-span-1">
+                    <div class="text-xs text-gray-400 mb-1 flex items-center gap-1.5">
+                        <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-400"></i> คืนรถแล้ว
+                    </div>
+                    <div class="text-2xl font-bold text-emerald-400" id="stat-returned">0</div>
+                </div>
+            </div>
+
+            <!-- Recent Records List Card -->
+            <div class="glass-card rounded-2xl p-5 shadow-2xl">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-semibold text-white flex items-center gap-2">
-                        <i data-lucide="user-check" class="text-brand-cyan w-5 h-5"></i>
-                        กรุณาเลือกชื่อผู้ทำรายการ
+                    <h2 class="text-base font-semibold text-white flex items-center gap-2">
+                        <i data-lucide="database" class="text-brand-cyan w-4 h-4"></i>
+                        ข้อมูลทั้งหมดจาก Google Sheet
                     </h2>
-                    <span class="text-xs text-gray-400">จิ้มเพื่อเลือก</span>
-                </div>
-
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4" id="borrower-grid">
-                    <!-- Dynamic Buttons -->
-                </div>
-
-                <div class="mt-4 pt-4 border-t border-gray-800 flex gap-2">
-                    <input type="text" id="custom-name" placeholder="+ เพิ่มชื่ออื่นๆ / พิมพ์ชื่อที่นี่..." 
-                           class="bg-black/50 border border-gray-800 rounded-xl px-4 py-3 text-sm text-white w-full focus:outline-none focus:border-brand-cyan transition">
-                    <button onclick="selectCustomName()" class="bg-gray-800 hover:bg-gray-700 text-white px-5 py-3 rounded-xl text-sm font-medium transition shrink-0 flex items-center gap-1">
-                        ตกลง
+                    <button onclick="fetchSheetDashboardData()" class="text-xs text-brand-cyan hover:underline flex items-center gap-1">
+                        <i data-lucide="refresh-cw" class="w-3 h-3" id="refresh-icon"></i> ดึงข้อมูลล่าสุด
                     </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead>
+                            <tr class="border-b border-gray-800 text-gray-400">
+                                <th class="pb-2.5 font-medium">เวลา</th>
+                                <th class="pb-2.5 font-medium">ผู้ทำรายการ</th>
+                                <th class="pb-2.5 font-medium">ประเภท</th>
+                                <th class="pb-2.5 font-medium">รุ่นรถ</th>
+                                <th class="pb-2.5 font-medium">ช่วงเวลา</th>
+                                <th class="pb-2.5 font-medium">สถานะ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashboard-table-body" class="divide-y divide-gray-800/60 text-gray-300">
+                            <tr>
+                                <td colspan="6" class="py-6 text-center text-gray-500">กำลังโหลดข้อมูลจาก Google Sheet...</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-
-            <!-- STEP 2: SELECT CAR MODEL, ACTION TYPE, DETAILS & TIME -->
-            <div id="step-2" class="hidden transition-all duration-300">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-semibold text-white flex items-center gap-2">
-                        <i data-lucide="car" class="text-brand-cyan w-5 h-5"></i>
-                        รายละเอียดการใช้รถ
-                    </h2>
-                    <button onclick="goToStep(1)" class="text-xs text-brand-cyan hover:underline flex items-center gap-1">
-                        <i data-lucide="arrow-left" class="w-3 h-3"></i> เปลี่ยนชื่อผู้ทำรายการ
-                    </button>
-                </div>
-
-                <!-- Selected User Badge -->
-                <div class="bg-brand-blue/10 border border-brand-blue/30 rounded-xl p-3 mb-4 flex items-center justify-between">
-                    <span class="text-xs text-gray-400">ผู้ทำรายการ:</span>
-                    <span id="selected-user-display" class="font-semibold text-brand-cyan text-sm"></span>
-                </div>
-
-                <!-- Action Type Selection (Borrow / Return) -->
-                <div class="grid grid-cols-2 gap-3 mb-4">
-                    <button onclick="selectActionType('เบิก')" id="btn-action-borrow" 
-                            class="p-3 rounded-xl border border-brand-cyan bg-brand-cyan/20 text-white font-semibold text-sm transition flex items-center justify-center gap-2">
-                        <i data-lucide="key-round" class="w-4 h-4 text-brand-cyan"></i> เบิกใช้งานรถ
-                    </button>
-                    <button onclick="selectActionType('คืน')" id="btn-action-return" 
-                            class="p-3 rounded-xl border border-gray-800 bg-black/40 text-gray-400 font-semibold text-sm transition flex items-center justify-center gap-2 hover:border-emerald-500/50 hover:text-white">
-                        <i data-lucide="rotate-ccw" class="w-4 h-4 text-emerald-400"></i> คืนรถทดลองขับ
-                    </button>
-                </div>
-
-                <!-- Car Models Grid Buttons -->
-                <div class="mb-4">
-                    <label class="block text-xs text-gray-400 mb-2 font-medium">เลือกรุ่นรถ:</label>
-                    <div class="grid grid-cols-3 gap-2" id="car-grid">
-                        <!-- Dynamic Car Buttons -->
-                    </div>
-                </div>
-
-                <!-- NEW: Time Slot Selection -->
-                <div class="mb-4">
-                    <label class="block text-xs text-gray-400 mb-2 font-medium">ช่วงเวลาใช้งาน:</label>
-                    <select id="time-slot" class="w-full bg-black/50 border border-gray-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-cyan transition">
-                        <option value="ช่วงเช้า (08:30 - 12:00 น.)">ช่วงเช้า (08:30 - 12:00 น.)</option>
-                        <option value="ช่วงบ่าย (13:00 - 17:00 น.)">ช่วงบ่าย (13:00 - 17:00 น.)</option>
-                        <option value="เต็มวัน (08:30 - 17:00 น.)">เต็มวัน (08:30 - 17:00 น.)</option>
-                        <option value="ลูกค้านอกสถานที่ / ทดลองขับพิเศษ">ลูกค้านอกสถานที่ / ทดลองขับพิเศษ</option>
-                    </select>
-                </div>
-
-                <!-- NEW: Additional Details Input -->
-                <div class="mb-5">
-                    <label class="block text-xs text-gray-400 mb-2 font-medium">รายละเอียดเพิ่มเติม / หมายเหตุ / เลขไมล์:</label>
-                    <input type="text" id="car-details" placeholder="เช่น ลูกค้าคุณสมชาย ขับทดลองเส้นทางบายพาส..." 
-                           class="w-full bg-black/50 border border-gray-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-cyan transition">
-                </div>
-
-                <!-- Proceed Button -->
-                <button onclick="validateAndProceedToStep3()" class="w-full py-3.5 bg-gradient-to-r from-brand-blue to-brand-cyan hover:opacity-90 text-white font-semibold rounded-xl text-sm transition shadow-lg shadow-brand-cyan/20 flex items-center justify-center gap-2">
-                    ตรวจสอบข้อมูลก่อนส่ง <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </button>
-            </div>
-
-            <!-- STEP 3: CONFIRM & SUBMIT -->
-            <div id="step-3" class="hidden transition-all duration-300">
-                <div class="text-center py-2">
-                    <div id="confirm-icon-bg" class="w-16 h-16 bg-brand-cyan/10 border border-brand-cyan rounded-full flex items-center justify-center mx-auto mb-3 text-brand-cyan">
-                        <i data-lucide="shield-check" class="w-8 h-8"></i>
-                    </div>
-                    <h2 class="text-xl font-bold text-white mb-1" id="confirm-title">ยืนยันการทำรายการ</h2>
-                    <p class="text-xs text-gray-400">กรุณาตรวจสอบข้อมูลก่อนส่งเข้าระบบ Google Sheet</p>
-                </div>
-
-                <!-- Summary Ticket -->
-                <div class="bg-black/60 border border-gray-800 rounded-xl p-4 my-5 space-y-3 relative overflow-hidden">
-                    <div class="absolute -right-8 -top-8 w-24 h-24 bg-brand-cyan/5 rounded-full blur-xl pointer-events-none"></div>
-                    
-                    <div class="flex justify-between items-center text-sm border-b border-gray-800 pb-2">
-                        <span class="text-gray-400">ผู้ทำรายการ</span>
-                        <span id="confirm-name" class="font-semibold text-white"></span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm border-b border-gray-800 pb-2">
-                        <span class="text-gray-400">ประเภทรายการ</span>
-                        <span id="confirm-action" class="font-bold"></span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm border-b border-gray-800 pb-2">
-                        <span class="text-gray-400">รุ่นรถทดลองขับ</span>
-                        <span id="confirm-car" class="font-bold text-brand-cyan text-base"></span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm border-b border-gray-800 pb-2">
-                        <span class="text-gray-400">ช่วงเวลาใช้งาน</span>
-                        <span id="confirm-timeslot" class="text-gray-200"></span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm border-b border-gray-800 pb-2">
-                        <span class="text-gray-400">รายละเอียด</span>
-                        <span id="confirm-details" class="text-gray-300 text-right"></span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-400">เวลาบันทึกระบบ</span>
-                        <span id="confirm-time" class="text-gray-300 text-xs font-mono"></span>
-                    </div>
-                </div>
-
-                <!-- Actions -->
-                <div class="flex gap-3">
-                    <button onclick="goToStep(2)" class="w-1/3 py-3.5 bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium rounded-xl text-sm transition">
-                        แก้ไข
-                    </button>
-                    <button id="submit-btn" onclick="submitToGoogleSheet()" class="w-2/3 py-3.5 bg-gradient-to-r from-brand-blue to-brand-cyan hover:opacity-90 text-white font-semibold rounded-xl text-sm transition shadow-lg shadow-brand-cyan/20 flex items-center justify-center gap-2">
-                        <i data-lucide="send" class="w-4 h-4"></i> ยืนยันส่งข้อมูล
-                    </button>
-                </div>
-            </div>
-
-            <!-- SUCCESS STATE -->
-            <div id="step-success" class="hidden text-center py-8">
-                <div class="w-20 h-20 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-400">
-                    <i data-lucide="check-circle-2" class="w-10 h-10"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-white mb-2">ส่งข้อมูลสำเร็จ!</h2>
-                <p class="text-sm text-gray-400 mb-6">บันทึกรายการลง Google Sheet เรียบร้อยแล้ว</p>
-                
-                <button onclick="resetForm()" class="bg-gray-800 hover:bg-gray-700 text-white px-8 py-3 rounded-xl text-sm font-medium transition inline-flex items-center gap-2">
-                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i> ทำรายการใหม่
-                </button>
-            </div>
-
         </div>
 
     </div>
@@ -280,7 +330,8 @@
 
     <!-- SCRIPT LOGIC -->
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsRjsYaorDetejAYd-uItWjzIoINX1VWTR6t_J0_MRhdPF3QVJy1fv4fiacVagPTmf/exec";
+        // แทนที่ลิงก์ด้านล่างนี้ด้วย Web App URL ของคุณชินอิจิ
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_iwjPOwhscxwHZ8P1XITl_yZjMx7nzXL5cK-cGUIJkC_rjQzVMELC-J2BnBTbVRI/exec";
 
         const TEAM_MEMBERS = [
             "ชินอิจิ", "เซลล์ดรีมโว", "เซลล์เบิร์ทเดย์", "เซลล์ต้อม", "เซลล์ปูนิ่ม", 
@@ -303,6 +354,27 @@
             renderBorrowers();
             renderCars();
         });
+
+        function switchTab(tabName) {
+            const formTab = document.getElementById('tab-form');
+            const dashTab = document.getElementById('tab-dashboard');
+            const formBtn = document.getElementById('tab-btn-form');
+            const dashBtn = document.getElementById('tab-btn-dashboard');
+
+            if (tabName === 'form') {
+                formTab.classList.remove('hidden');
+                dashTab.classList.add('hidden');
+                formBtn.className = "px-4 py-2 rounded-xl text-xs font-semibold bg-brand-cyan text-brand-dark transition flex items-center gap-1.5 shadow-lg shadow-brand-cyan/20";
+                dashBtn.className = "px-4 py-2 rounded-xl text-xs font-semibold bg-gray-800 text-gray-300 hover:text-white transition flex items-center gap-1.5 border border-gray-700";
+            } else {
+                formTab.classList.add('hidden');
+                dashTab.classList.remove('hidden');
+                dashBtn.className = "px-4 py-2 rounded-xl text-xs font-semibold bg-brand-cyan text-brand-dark transition flex items-center gap-1.5 shadow-lg shadow-brand-cyan/20";
+                formBtn.className = "px-4 py-2 rounded-xl text-xs font-semibold bg-gray-800 text-gray-300 hover:text-white transition flex items-center gap-1.5 border border-gray-700";
+                fetchSheetDashboardData();
+            }
+            lucide.createIcons();
+        }
 
         function renderBorrowers() {
             const grid = document.getElementById('borrower-grid');
@@ -330,7 +402,6 @@
         function selectBorrower(name) {
             selectedBorrower = name;
             document.getElementById('selected-user-display').innerText = selectedBorrower;
-            // ตั้งค่าเลือกรถคันแรกเป็นค่าเริ่มต้น
             if(!selectedCar) {
                 selectedCar = CAR_MODELS[0].name;
             }
@@ -451,10 +522,12 @@
             submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> กำลังบันทึก...`;
             lucide.createIcons();
 
+            const actionTypeText = selectedAction === 'เบิก' ? 'เบิกใช้งาน' : 'คืนรถ';
+
             const payload = {
                 timestamp: requestTimestamp,
                 borrower: selectedBorrower,
-                actionType: selectedAction === 'เบิก' ? 'เบิกใช้งาน' : 'คืนรถ',
+                actionType: actionTypeText,
                 carModel: selectedCar,
                 timeSlot: document.getElementById('time-slot').value,
                 details: document.getElementById('car-details').value.trim() || '-'
@@ -466,8 +539,7 @@
                     submitBtn.innerHTML = originalBtnContent;
                     document.getElementById('step-3').classList.add('hidden');
                     document.getElementById('step-success').classList.remove('hidden');
-                    alert('⚠️ ยังไม่ได้ระบุ SCRIPT_URL (แสดงจำลองผลลัพธ์)');
-                }, 800);
+                }, 600);
                 return;
             }
 
@@ -475,9 +547,7 @@
                 await fetch(SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
@@ -493,6 +563,63 @@
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalBtnContent;
             }
+        }
+
+        // ดึงข้อมูลสดจาก Google Sheet มาแสดงที่แดชบอร์ด
+        async function fetchSheetDashboardData() {
+            if (!SCRIPT_URL || SCRIPT_URL.includes("YOUR_SCRIPT_ID")) {
+                document.getElementById('dashboard-table-body').innerHTML = `<tr><td colspan="6" class="py-6 text-center text-red-400">⚠️ กรุณาระบุ SCRIPT_URL ให้ถูกต้องก่อน</td></tr>`;
+                return;
+            }
+
+            const tbody = document.getElementById('dashboard-table-body');
+            tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-gray-500"><i data-lucide="loader-2" class="w-5 h-5 animate-spin inline-block mr-2"></i>กำลังดึงข้อมูลจาก Google Sheet...</td></tr>`;
+            lucide.createIcons();
+
+            try {
+                const response = await fetch(SCRIPT_URL);
+                const result = await response.json();
+
+                if (result.result === 'success') {
+                    const data = result.data;
+                    document.getElementById('stat-total').innerText = data.length;
+                    const activeCount = data.filter(item => item.status === 'กำลังใช้งาน').length;
+                    const returnedCount = data.filter(item => item.status === 'คืนแล้ว').length;
+
+                    document.getElementById('stat-active').innerText = activeCount;
+                    document.getElementById('stat-returned').innerText = returnedCount;
+
+                    if (data.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-gray-500">ยังไม่มีข้อมูลใน Google Sheet</td></tr>`;
+                        return;
+                    }
+
+                    tbody.innerHTML = data.map(item => `
+                        <tr class="hover:bg-white/[0.02] transition">
+                            <td class="py-3 font-mono text-[11px] text-gray-400">${item.timestamp}</td>
+                            <td class="py-3 font-medium text-white">${item.borrower}</td>
+                            <td class="py-3">
+                                <span class="px-2 py-0.5 rounded text-[10px] ${item.actionType === 'เบิกใช้งาน' ? 'bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'}">
+                                    ${item.actionType}
+                                </span>
+                            </td>
+                            <td class="py-3 font-semibold text-brand-cyan">${item.carModel}</td>
+                            <td class="py-3 text-gray-400 text-[11px]">${item.timeSlot}</td>
+                            <td class="py-3">
+                                <span class="text-[11px] ${item.status === 'กำลังใช้งาน' ? 'text-brand-cyan' : 'text-emerald-400 font-medium'}">
+                                    ● ${item.status}
+                                </span>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-red-400">ไม่สามารถโหลดข้อมูลได้</td></tr>`;
+                }
+            } catch (error) {
+                console.error('Error fetching sheet data:', error);
+                tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-red-400">เกิดข้อผิดพลาดในการเชื่อมต่อ Google Sheet</td></tr>`;
+            }
+            lucide.createIcons();
         }
     </script>
 </body>
